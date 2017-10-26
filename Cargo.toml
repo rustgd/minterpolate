@@ -1,0 +1,7 @@
+[package]
+name = "minterpolate"
+version = "0.1.0"
+authors = ["Simon Rönnberg <simon.ronnberg@codemill.se>"]
+
+[dependencies]
+mint = "*"
