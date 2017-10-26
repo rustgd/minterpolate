@@ -70,3 +70,39 @@ impl InterpolationPrimitive for Quaternion<f32> {
         (self.s * self.s) + self.v.magnitude2()
     }
 }
+
+impl InterpolationPrimitive for [f32; 4] {
+    fn add(&self, other: &Self) -> Self {
+        [self[0] + other[0], self[1] + other[1], self[2] + other[2], self[3] + other[3]]
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        [self[0] - other[0], self[1] - other[1], self[2] - other[2], self[3] - other[3]]
+    }
+
+    fn mul(&self, other: f32) -> Self {
+        [self[0] * other, self[1] * other, self[2] * other, self[3] * other]
+    }
+
+    fn magnitude2(&self) -> f32 {
+        (self[0] * self[0]) + (self[1] * self[1]) + (self[2] * self[2]) + (self[3] * self[3])
+    }
+}
+
+impl InterpolationPrimitive for [f32; 3] {
+    fn add(&self, other: &Self) -> Self {
+        [self[0] + other[0], self[1] + other[1], self[2] + other[2]]
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        [self[0] - other[0], self[1] - other[1], self[2] - other[2]]
+    }
+
+    fn mul(&self, other: f32) -> Self {
+        [self[0] * other, self[1] * other, self[2] * other]
+    }
+
+    fn magnitude2(&self) -> f32 {
+        (self[0] * self[0]) + (self[1] * self[1]) + (self[2] * self[2])
+    }
+}
