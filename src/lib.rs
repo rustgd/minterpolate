@@ -48,6 +48,16 @@ mod catmull_rom_spline;
 /// length of inputs. See each interpolation function for a description of the output data and
 /// alignment.
 pub trait SetInterpolate<T> {
-    /// invariants: inputs[0] >= 0, inputs[i+1] > inputs[i]
+    
+    /// Interpolation function, `f(input) -> T`
+    ///
+    /// ## Parameters
+    ///
+    /// - `input`: the input value to the function
+    /// - `inputs`: list of discrete input values for each keyframe
+    /// - `outputs`: list of output values to interpolate between, note that this data set is
+    ///              tied to the interpolation function, and there is no guarantee or requirement
+    ///              that it is the same size as the inputs.
+    /// - `normalize`: if true, normalize the interpolated value before returning it
     fn interpolate(&self, input: f32, inputs: &Vec<f32>, outputs: &Vec<T>, normalize: bool) -> T;
 }
