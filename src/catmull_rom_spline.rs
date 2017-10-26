@@ -1,4 +1,3 @@
-use SetInterpolate;
 use cubic_spline::spline;
 use primitive::InterpolationPrimitive;
 
@@ -23,41 +22,42 @@ use primitive::InterpolationPrimitive;
 ///             this should be the size of `inputs` + 2
 ///             `[ in_tangent_0, position_0, position_1, .., position_n, out_tangent_n ]`
 /// - `normalize`: if true, normalize the interpolated value before returning it
-pub struct CatmullRomSplineSetInterpolate;
-
-impl<T> SetInterpolate<T> for CatmullRomSplineSetInterpolate
-where
-    T: InterpolationPrimitive + Copy,
+pub fn catmull_rom_spline_interpolate<T>(
+    input: f32,
+    inputs: &[f32],
+    outputs: &[T],
+    normalize: bool,
+) -> T
+    where
+        T: InterpolationPrimitive + Copy,
 {
-    fn interpolate(&self, input: f32, inputs: &Vec<f32>, outputs: &Vec<T>, normalize: bool) -> T {
-        let input_index = inputs
-            .binary_search_by(|v| v.partial_cmp(&input).unwrap())
-            .unwrap_or_else(|index| index - 1);
-        if input_index >= (inputs.len() - 1) {
-            outputs[outputs.len() - 2]
+    let input_index = inputs
+        .binary_search_by(|v| v.partial_cmp(&input).unwrap())
+        .unwrap_or_else(|index| index - 1);
+    if input_index >= (inputs.len() - 1) {
+        outputs[outputs.len() - 2]
+    } else {
+        let t_diff = inputs[input_index + 1] - inputs[input_index];
+        let v = spline(
+            input,
+            inputs[input_index],
+            t_diff,
+            &outputs[input_index + 1],
+            &outputs[input_index + 2],
+            &catmull_tangent(input_index, inputs, outputs),
+            &catmull_tangent(input_index + 1, inputs, outputs),
+        );
+        if normalize {
+            v.normalize()
         } else {
-            let t_diff = inputs[input_index + 1] - inputs[input_index];
-            let v = spline(
-                input,
-                inputs[input_index],
-                t_diff,
-                &outputs[input_index + 1],
-                &outputs[input_index + 2],
-                &catmull_tangent(input_index, inputs, outputs),
-                &catmull_tangent(input_index + 1, inputs, outputs),
-            );
-            if normalize {
-                v.normalize()
-            } else {
-                v
-            }
+            v
         }
     }
 }
 
-fn catmull_tangent<D>(index: usize, inputs: &Vec<f32>, outputs: &Vec<D>) -> D
-where
-    D: InterpolationPrimitive + Copy,
+fn catmull_tangent<D>(index: usize, inputs: &[f32], outputs: &[D]) -> D
+    where
+        D: InterpolationPrimitive + Copy,
 {
     let output_index = index + 1;
     if index == 0 {
@@ -74,10 +74,46 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mint::Vector3;
+    use mint::{Vector3, Quaternion};
 
     #[test]
-    fn test_catmull() {
+    fn test_catmull_arr3() {
+        let input = vec![0., 1., 2., 3., 4.];
+        let output = vec![
+            [1., 0., 0.],
+            [0., 0., 0.],
+            [1., 0., 0.],
+            [0., 0., 0.],
+            [-1., 0., 0.],
+            [0., 0., 0.],
+            [-1., 0., 0.],
+        ];
+        assert_eq!(
+            [0.625, 0., 0.],
+            catmull_rom_spline_interpolate(0.5, &input, &output, false)
+        );
+    }
+
+    #[test]
+    fn test_catmull_arr4() {
+        let input = vec![0., 1., 2., 3., 4.];
+        let output = vec![
+            [1., 0., 0., 0.],
+            [0., 0., 0., 0.],
+            [1., 0., 0., 0.],
+            [0., 0., 0., 0.],
+            [-1., 0., 0., 0.],
+            [0., 0., 0., 0.],
+            [-1., 0., 0., 0.],
+        ];
+        assert_eq!(
+            [1., 0., 0., 0.],
+            catmull_rom_spline_interpolate(0.5, &input, &output, true)
+        );
+    }
+
+    #[test]
+    fn test_catmull_vec3() {
         let input = vec![0., 1., 2., 3., 4.];
         let output = vec![
             Vector3::from([1., 0., 0.]),
@@ -89,8 +125,26 @@ mod tests {
             Vector3::from([-1., 0., 0.]),
         ];
         assert_eq!(
-            Vector3::from([0.625, 0.625, 0.625]),
-            CatmullRomSplineSetInterpolate.interpolate(0.5, &input, &output, false)
+            Vector3::from([0.625, 0., 0.]),
+            catmull_rom_spline_interpolate(0.5, &input, &output, false)
+        );
+    }
+
+    #[test]
+    fn test_catmull_quat() {
+        let input = vec![0., 1., 2., 3., 4.];
+        let output = vec![
+            Quaternion::from([1., 0., 0., 0.]),
+            Quaternion::from([0., 0., 0., 0.]),
+            Quaternion::from([1., 0., 0., 0.]),
+            Quaternion::from([0., 0., 0., 0.]),
+            Quaternion::from([-1., 0., 0., 0.]),
+            Quaternion::from([0., 0., 0., 0.]),
+            Quaternion::from([-1., 0., 0., 0.]),
+        ];
+        assert_eq!(
+            Quaternion::from([1., 0., 0., 0.]),
+            catmull_rom_spline_interpolate(0.5, &input, &output, true)
         );
     }
 }
