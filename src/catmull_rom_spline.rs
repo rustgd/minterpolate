@@ -1,6 +1,6 @@
 use SetInterpolate;
-use primitive::InterpolationPrimitive;
 use cubic_spline::spline;
+use primitive::InterpolationPrimitive;
 
 /// Catmull-Rom spline interpolation
 ///
@@ -25,7 +25,10 @@ use cubic_spline::spline;
 /// - `normalize`: if true, normalize the interpolated value before returning it
 pub struct CatmullRomSplineSetInterpolate;
 
-impl<T> SetInterpolate<T> for CatmullRomSplineSetInterpolate where T: InterpolationPrimitive + Copy {
+impl<T> SetInterpolate<T> for CatmullRomSplineSetInterpolate
+where
+    T: InterpolationPrimitive + Copy,
+{
     fn interpolate(&self, input: f32, inputs: &Vec<f32>, outputs: &Vec<T>, normalize: bool) -> T {
         let input_index = inputs
             .binary_search_by(|v| v.partial_cmp(&input).unwrap())
@@ -53,8 +56,8 @@ impl<T> SetInterpolate<T> for CatmullRomSplineSetInterpolate where T: Interpolat
 }
 
 fn catmull_tangent<D>(index: usize, inputs: &Vec<f32>, outputs: &Vec<D>) -> D
-    where
-        D: InterpolationPrimitive + Copy,
+where
+    D: InterpolationPrimitive + Copy,
 {
     let output_index = index + 1;
     if index == 0 {
@@ -85,6 +88,9 @@ mod tests {
             Vector3::from([0., 0., 0.]),
             Vector3::from([-1., 0., 0.]),
         ];
-        assert_eq!(Vector3::from([0.625, 0.625, 0.625]), CatmullRomSplineSetInterpolate.interpolate(0.5, &input, &output, false));
+        assert_eq!(
+            Vector3::from([0.625, 0.625, 0.625]),
+            CatmullRomSplineSetInterpolate.interpolate(0.5, &input, &output, false)
+        );
     }
 }

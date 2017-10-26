@@ -22,7 +22,10 @@ use primitive::InterpolationPrimitive;
 /// - `normalize`: if true, normalize the interpolated value before returning it
 pub struct CubicSplineSetInterpolate;
 
-impl<T> SetInterpolate<T> for CubicSplineSetInterpolate where T: InterpolationPrimitive + Copy {
+impl<T> SetInterpolate<T> for CubicSplineSetInterpolate
+where
+    T: InterpolationPrimitive + Copy,
+{
     fn interpolate(&self, input: f32, inputs: &Vec<f32>, outputs: &Vec<T>, normalize: bool) -> T {
         let input_index = inputs
             .binary_search_by(|v| v.partial_cmp(&input).unwrap())
@@ -53,8 +56,8 @@ impl<T> SetInterpolate<T> for CubicSplineSetInterpolate where T: InterpolationPr
 
 #[inline]
 pub(crate) fn spline<D>(t: f32, left_t: f32, t_diff: f32, p0: &D, p1: &D, m0: &D, m1: &D) -> D
-    where
-        D: InterpolationPrimitive,
+where
+    D: InterpolationPrimitive,
 {
     let t = (t - left_t) / t_diff;
     let t2 = t * t;
@@ -64,4 +67,3 @@ pub(crate) fn spline<D>(t: f32, left_t: f32, t_diff: f32, p0: &D, p1: &D, m0: &D
         .add(&p1.mul(-2. * t3 + 3. * t2))
         .add(&m1.mul(t3 - t2))
 }
- 

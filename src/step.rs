@@ -15,7 +15,10 @@ use primitive::InterpolationPrimitive;
 /// - `normalize`: if true, normalize the interpolated value before returning it
 pub struct StepSetInterpolate;
 
-impl<T> SetInterpolate<T> for StepSetInterpolate where T: InterpolationPrimitive + Copy {
+impl<T> SetInterpolate<T> for StepSetInterpolate
+where
+    T: InterpolationPrimitive + Copy,
+{
     fn interpolate(&self, input: f32, inputs: &Vec<f32>, outputs: &Vec<T>, _: bool) -> T {
         let input_index = inputs
             .binary_search_by(|v| v.partial_cmp(&input).unwrap())

@@ -6,16 +6,28 @@
 //! ## Examples
 //!
 //! ```
+//! use minterpolate::{CatmullRomSplineSetInterpolate, SetInterpolate};
 //!
+//! let input = vec![0., 1., 2., 3., 4.];
+//! let output = vec![
+//!     [1., 0., 0.],
+//!     [0., 0., 0.],
+//!     [1., 0., 0.],
+//!     [0., 0., 0.],
+//!     [-1., 0., 0.],
+//!     [0., 0., 0.],
+//!     [-1., 0., 0.],
+//! ];
+//! CatmullRomSplineSetInterpolate.interpolate(0.5, &input, &output, false);
 //! ```
 
 extern crate mint;
 
-pub use primitive::InterpolationPrimitive;
-pub use linear::LinearSetInterpolate;
-pub use step::StepSetInterpolate;
-pub use cubic_spline::CubicSplineSetInterpolate;
 pub use catmull_rom_spline::CatmullRomSplineSetInterpolate;
+pub use cubic_spline::CubicSplineSetInterpolate;
+pub use linear::LinearSetInterpolate;
+pub use primitive::InterpolationPrimitive;
+pub use step::StepSetInterpolate;
 
 mod primitive;
 mod linear;

@@ -17,25 +17,25 @@ pub trait InterpolationPrimitive: Sized {
 impl InterpolationPrimitive for Vector3<f32> {
     fn add(&self, other: &Self) -> Self {
         Vector3 {
-            x : self.x + other.x,
-            y : self.x + other.y,
-            z : self.x + other.z,
+            x: self.x + other.x,
+            y: self.x + other.y,
+            z: self.x + other.z,
         }
     }
 
     fn sub(&self, other: &Self) -> Self {
         Vector3 {
-            x : self.x - other.x,
-            y : self.x - other.y,
-            z : self.x - other.z,
+            x: self.x - other.x,
+            y: self.x - other.y,
+            z: self.x - other.z,
         }
     }
 
     fn mul(&self, other: f32) -> Self {
         Vector3 {
-            x : self.x * other,
-            y : self.x * other,
-            z : self.x * other,
+            x: self.x * other,
+            y: self.x * other,
+            z: self.x * other,
         }
     }
 
@@ -73,15 +73,30 @@ impl InterpolationPrimitive for Quaternion<f32> {
 
 impl InterpolationPrimitive for [f32; 4] {
     fn add(&self, other: &Self) -> Self {
-        [self[0] + other[0], self[1] + other[1], self[2] + other[2], self[3] + other[3]]
+        [
+            self[0] + other[0],
+            self[1] + other[1],
+            self[2] + other[2],
+            self[3] + other[3],
+        ]
     }
 
     fn sub(&self, other: &Self) -> Self {
-        [self[0] - other[0], self[1] - other[1], self[2] - other[2], self[3] - other[3]]
+        [
+            self[0] - other[0],
+            self[1] - other[1],
+            self[2] - other[2],
+            self[3] - other[3],
+        ]
     }
 
     fn mul(&self, other: f32) -> Self {
-        [self[0] * other, self[1] * other, self[2] * other, self[3] * other]
+        [
+            self[0] * other,
+            self[1] * other,
+            self[2] * other,
+            self[3] * other,
+        ]
     }
 
     fn magnitude2(&self) -> f32 {
