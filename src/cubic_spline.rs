@@ -1,4 +1,3 @@
-use SetInterpolate;
 use primitive::InterpolationPrimitive;
 
 /// Cubic Hermite spline interpolation
@@ -20,36 +19,37 @@ use primitive::InterpolationPrimitive;
 ///             should three times the size of `inputs` and defined as
 ///             `[ in_tangent_0, position_0, out_tangent_0, in_tangent_1, position_1, out_tangent_1, .. ]`
 /// - `normalize`: if true, normalize the interpolated value before returning it
-pub struct CubicSplineSetInterpolate;
-
-impl<T> SetInterpolate<T> for CubicSplineSetInterpolate
+pub fn cubic_spline_interpolate<T>(
+    input: f32,
+    inputs: &[f32],
+    outputs: &[T],
+    normalize: bool,
+) -> T
 where
     T: InterpolationPrimitive + Copy,
 {
-    fn interpolate(&self, input: f32, inputs: &Vec<f32>, outputs: &Vec<T>, normalize: bool) -> T {
-        let input_index = inputs
-            .binary_search_by(|v| v.partial_cmp(&input).unwrap())
-            .unwrap_or_else(|index| index - 1);
-        if input_index >= (inputs.len() - 1) {
-            outputs[outputs.len() - 2]
+    let input_index = inputs
+        .binary_search_by(|v| v.partial_cmp(&input).unwrap())
+        .unwrap_or_else(|index| index - 1);
+    if input_index >= (inputs.len() - 1) {
+        outputs[outputs.len() - 2]
+    } else {
+        let t_diff = inputs[input_index + 1] - inputs[input_index];
+        let left_index = input_index * 3;
+        let right_index = (input_index + 1) * 3;
+        let v = spline(
+            input,
+            inputs[input_index],
+            t_diff,
+            &outputs[left_index + 1],
+            &outputs[right_index + 1],
+            &outputs[left_index + 2].mul(t_diff),
+            &outputs[right_index].mul(t_diff),
+        );
+        if normalize {
+            v.normalize()
         } else {
-            let t_diff = inputs[input_index + 1] - inputs[input_index];
-            let left_index = input_index * 3;
-            let right_index = (input_index + 1) * 3;
-            let v = spline(
-                input,
-                inputs[input_index],
-                t_diff,
-                &outputs[left_index + 1],
-                &outputs[right_index + 1],
-                &outputs[left_index + 2].mul(t_diff),
-                &outputs[right_index].mul(t_diff),
-            );
-            if normalize {
-                v.normalize()
-            } else {
-                v
-            }
+            v
         }
     }
 }

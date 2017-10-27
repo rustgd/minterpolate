@@ -18,24 +18,24 @@ impl InterpolationPrimitive for Vector3<f32> {
     fn add(&self, other: &Self) -> Self {
         Vector3 {
             x: self.x + other.x,
-            y: self.x + other.y,
-            z: self.x + other.z,
+            y: self.y + other.y,
+            z: self.z + other.z,
         }
     }
 
     fn sub(&self, other: &Self) -> Self {
         Vector3 {
             x: self.x - other.x,
-            y: self.x - other.y,
-            z: self.x - other.z,
+            y: self.y - other.y,
+            z: self.z - other.z,
         }
     }
 
     fn mul(&self, other: f32) -> Self {
         Vector3 {
             x: self.x * other,
-            y: self.x * other,
-            z: self.x * other,
+            y: self.y * other,
+            z: self.z * other,
         }
     }
 
