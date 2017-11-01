@@ -5,6 +5,7 @@ pub trait InterpolationPrimitive: Sized {
     fn add(&self, other: &Self) -> Self;
     fn sub(&self, other: &Self) -> Self;
     fn mul(&self, scalar: f32) -> Self;
+    fn dot(&self, other: &Self) -> f32;
     fn magnitude2(&self) -> f32;
     fn magnitude(&self) -> f32 {
         self.magnitude2().sqrt()
@@ -39,8 +40,12 @@ impl InterpolationPrimitive for Vector3<f32> {
         }
     }
 
+    fn dot(&self, other: &Self) -> f32 {
+        (self.x * other.x) + (self.y * other.y) + (self.z * other.z)
+    }
+
     fn magnitude2(&self) -> f32 {
-        (self.x * self.x) + (self.y * self.y) + (self.z * self.z)
+        self.dot(self)
     }
 }
 
@@ -66,8 +71,12 @@ impl InterpolationPrimitive for Quaternion<f32> {
         }
     }
 
+    fn dot(&self, other: &Self) -> f32 {
+        (self.s * other.s) + self.v.dot(&other.v)
+    }
+
     fn magnitude2(&self) -> f32 {
-        (self.s * self.s) + self.v.magnitude2()
+        self.dot(self)
     }
 }
 
@@ -99,8 +108,12 @@ impl InterpolationPrimitive for [f32; 4] {
         ]
     }
 
+    fn dot(&self, other: &Self) -> f32 {
+        (self[0] * other[0]) + (self[1] * other[1]) + (self[2] * other[2]) + (self[3] * other[3])
+    }
+
     fn magnitude2(&self) -> f32 {
-        (self[0] * self[0]) + (self[1] * self[1]) + (self[2] * self[2]) + (self[3] * self[3])
+        self.dot(self)
     }
 }
 
@@ -117,7 +130,11 @@ impl InterpolationPrimitive for [f32; 3] {
         [self[0] * other, self[1] * other, self[2] * other]
     }
 
+    fn dot(&self, other: &Self) -> f32 {
+        (self[0] * other[0]) + (self[1] * other[1]) + (self[2] * other[2])
+    }
+
     fn magnitude2(&self) -> f32 {
-        (self[0] * self[0]) + (self[1] * self[1]) + (self[2] * self[2])
+        self.dot(self)
     }
 }

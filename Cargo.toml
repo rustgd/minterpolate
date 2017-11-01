@@ -14,3 +14,4 @@ keywords = ["gamedev", "mint", "interpolation"]
 
 [dependencies]
 mint = "0.4"
+num = "0"

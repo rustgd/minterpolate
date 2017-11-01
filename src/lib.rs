@@ -22,15 +22,18 @@
 //! ```
 
 extern crate mint;
+extern crate num;
 
 pub use catmull_rom_spline::catmull_rom_spline_interpolate;
 pub use cubic_spline::cubic_spline_interpolate;
 pub use linear::linear_interpolate;
 pub use primitive::InterpolationPrimitive;
 pub use step::step_interpolate;
+pub use spherical_linear::spherical_linear_interpolate;
 
 mod primitive;
 mod linear;
+mod spherical_linear;
 mod step;
 mod cubic_spline;
 mod catmull_rom_spline;
