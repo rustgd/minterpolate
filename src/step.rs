@@ -16,6 +16,9 @@ pub fn step_interpolate<T>(input: f32, inputs: &[f32], outputs: &[T], _: bool) -
 where
     T: InterpolationPrimitive + Copy,
 {
+    if input < inputs[0] {
+        return outputs[0];
+    }
     let input_index = inputs
         .binary_search_by(|v| v.partial_cmp(&input).unwrap())
         .unwrap_or_else(|index| index - 1);

@@ -28,6 +28,9 @@ pub fn cubic_spline_interpolate<T>(
 where
     T: InterpolationPrimitive + Copy,
 {
+    if input < inputs[0] {
+        return outputs[1];
+    }
     let input_index = inputs
         .binary_search_by(|v| v.partial_cmp(&input).unwrap())
         .unwrap_or_else(|index| index - 1);
