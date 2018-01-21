@@ -32,7 +32,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mint::{Vector3, Quaternion};
+    use mint::{Quaternion, Vector3};
 
     #[test]
     fn test_step_arr3() {
@@ -44,10 +44,7 @@ mod tests {
             [-1., 0., 0.],
             [0., 0., 0.],
         ];
-        assert_eq!(
-            [0., 0., 0.],
-            step_interpolate(0.5, &input, &output, false)
-        );
+        assert_eq!([0., 0., 0.], step_interpolate(0.5, &input, &output, false));
     }
 
     #[test]

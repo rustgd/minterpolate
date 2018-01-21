@@ -138,3 +138,243 @@ impl InterpolationPrimitive for [f32; 3] {
         self.dot(self)
     }
 }
+
+impl InterpolationPrimitive for f32 {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        self * scalar
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        *self * *other
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}
+
+impl InterpolationPrimitive for f64 {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        self * scalar as f64
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        (*self * *other) as f32
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self as f32
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}
+
+impl InterpolationPrimitive for u32 {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        (*self as f32 * scalar) as u32
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        (*self * *other) as f32
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self as f32
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}
+
+impl InterpolationPrimitive for u64 {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        (*self as f32 * scalar) as u64
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        (*self * *other) as f32
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self as f32
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}
+
+impl InterpolationPrimitive for usize {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        (*self as f32 * scalar) as usize
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        (*self * *other) as f32
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self as f32
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}
+
+impl InterpolationPrimitive for i32 {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        (*self as f32 * scalar) as i32
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        (*self * *other) as f32
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self as f32
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}
+
+impl InterpolationPrimitive for i64 {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        (*self as f32 * scalar) as i64
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        (*self * *other) as f32
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self as f32
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}
+
+impl InterpolationPrimitive for isize {
+    fn add(&self, other: &Self) -> Self {
+        *self + other
+    }
+
+    fn sub(&self, other: &Self) -> Self {
+        *self - other
+    }
+
+    fn mul(&self, scalar: f32) -> Self {
+        (*self as f32 * scalar) as isize
+    }
+
+    fn dot(&self, other: &Self) -> f32 {
+        (*self * *other) as f32
+    }
+
+    fn magnitude2(&self) -> f32 {
+        self.dot(self)
+    }
+
+    fn magnitude(&self) -> f32 {
+        *self as f32
+    }
+
+    fn normalize(&self) -> Self {
+        *self
+    }
+}

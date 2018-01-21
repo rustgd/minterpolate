@@ -1,5 +1,5 @@
-use primitive::InterpolationPrimitive;
 use num::cast;
+use primitive::InterpolationPrimitive;
 
 /// Do spherical linear interpolation.
 ///
@@ -18,7 +18,12 @@ use num::cast;
 /// - `outputs`: list of output values to interpolate between, for spherical
 ///              linear interpolation this should be the same size as `inputs`
 /// - `normalize`: if true, normalize the interpolated value before returning it
-pub fn spherical_linear_interpolate<T>(input: f32, inputs: &[f32], outputs: &[T], normalize: bool) -> T
+pub fn spherical_linear_interpolate<T>(
+    input: f32,
+    inputs: &[f32],
+    outputs: &[T],
+    normalize: bool,
+) -> T
 where
     T: InterpolationPrimitive + Copy,
 {
@@ -52,7 +57,9 @@ where
 
             let scale1 = (theta * (1. - d)).sin();
             let scale2 = (theta * d).sin();
-            left.mul(scale1).add(&right.mul(scale2)).mul(theta.sin().recip())
+            left.mul(scale1)
+                .add(&right.mul(scale2))
+                .mul(theta.sin().recip())
         };
         if normalize {
             v.normalize()
@@ -65,7 +72,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mint::{Vector3, Quaternion};
+    use mint::{Quaternion, Vector3};
     use std;
 
     #[test]

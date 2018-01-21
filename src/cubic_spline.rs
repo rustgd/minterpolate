@@ -19,12 +19,7 @@ use primitive::InterpolationPrimitive;
 ///             should three times the size of `inputs` and defined as
 ///             `[ in_tangent_0, position_0, out_tangent_0, in_tangent_1, position_1, out_tangent_1, .. ]`
 /// - `normalize`: if true, normalize the interpolated value before returning it
-pub fn cubic_spline_interpolate<T>(
-    input: f32,
-    inputs: &[f32],
-    outputs: &[T],
-    normalize: bool,
-) -> T
+pub fn cubic_spline_interpolate<T>(input: f32, inputs: &[f32], outputs: &[T], normalize: bool) -> T
 where
     T: InterpolationPrimitive + Copy,
 {
