@@ -1,4 +1,5 @@
 use cubic_spline::spline;
+use get_input_index;
 use primitive::InterpolationPrimitive;
 
 /// Catmull-Rom spline interpolation
@@ -31,12 +32,10 @@ pub fn catmull_rom_spline_interpolate<T>(
 where
     T: InterpolationPrimitive + Copy,
 {
-    if input < inputs[0] {
-        return outputs[1];
-    }
-    let input_index = inputs
-        .binary_search_by(|v| v.partial_cmp(&input).unwrap())
-        .unwrap_or_else(|index| index - 1);
+    let input_index = match get_input_index(input, inputs) {
+        Some(index) => index,
+        None => return outputs[1],
+    };
     if input_index >= (inputs.len() - 1) {
         outputs[outputs.len() - 2]
     } else {
