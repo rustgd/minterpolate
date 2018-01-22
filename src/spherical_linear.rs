@@ -1,3 +1,4 @@
+use get_input_index;
 use num::cast;
 use primitive::InterpolationPrimitive;
 
@@ -27,12 +28,10 @@ pub fn spherical_linear_interpolate<T>(
 where
     T: InterpolationPrimitive + Copy,
 {
-    if input < inputs[0] {
-        return outputs[0];
-    }
-    let input_index = inputs
-        .binary_search_by(|v| v.partial_cmp(&input).unwrap())
-        .unwrap_or_else(|index| index - 1);
+    let input_index = match get_input_index(input, inputs) {
+        Some(index) => index,
+        None => return outputs[0],
+    };
     if input_index >= (inputs.len() - 1) {
         outputs[outputs.len() - 1]
     } else {
