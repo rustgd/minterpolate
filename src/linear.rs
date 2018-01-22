@@ -44,7 +44,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mint::{Vector3, Quaternion};
+    use mint::{Quaternion, Vector3};
 
     #[test]
     fn test_linear_arr3() {

@@ -28,8 +28,8 @@ pub fn catmull_rom_spline_interpolate<T>(
     outputs: &[T],
     normalize: bool,
 ) -> T
-    where
-        T: InterpolationPrimitive + Copy,
+where
+    T: InterpolationPrimitive + Copy,
 {
     if input < inputs[0] {
         return outputs[1];
@@ -59,8 +59,8 @@ pub fn catmull_rom_spline_interpolate<T>(
 }
 
 fn catmull_tangent<D>(index: usize, inputs: &[f32], outputs: &[D]) -> D
-    where
-        D: InterpolationPrimitive + Copy,
+where
+    D: InterpolationPrimitive + Copy,
 {
     let output_index = index + 1;
     if index == 0 {
@@ -77,7 +77,7 @@ fn catmull_tangent<D>(index: usize, inputs: &[f32], outputs: &[D]) -> D
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mint::{Vector3, Quaternion};
+    use mint::{Quaternion, Vector3};
 
     #[test]
     fn test_catmull_arr3() {
