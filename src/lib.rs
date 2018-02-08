@@ -24,6 +24,10 @@
 extern crate mint;
 extern crate num;
 
+#[cfg(feature = "serde")]
+#[macro_use]
+extern crate serde;
+
 pub use catmull_rom_spline::catmull_rom_spline_interpolate;
 pub use cubic_spline::cubic_spline_interpolate;
 pub use linear::linear_interpolate;
@@ -37,6 +41,8 @@ mod spherical_linear;
 mod step;
 mod cubic_spline;
 mod catmull_rom_spline;
+
+use std::fmt;
 
 /// Calculate the keyframe index in the input collection
 ///
@@ -85,4 +91,81 @@ pub fn get_interpolation_factor(input: f32, inputs: &[f32]) -> Option<(usize, f3
             )
         }
     })
+}
+
+/// Supported interpolation functions
+#[derive(Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub enum InterpolationFunction<T>
+where
+    T: InterpolationPrimitive,
+{
+    /// Linear interpolation
+    Linear,
+    /// Spherical linear interpolation
+    SphericalLinear,
+    /// Step interpolation
+    Step,
+    /// Catmull-Rom spline interpolation
+    CatmullRomSpline,
+    /// Cubic Hermite spline interpolation
+    CubicSpline,
+    /// Generic function
+    #[cfg_attr(feature = "serde", serde(skip_serializing, skip_deserializing))]
+    Function(fn(f32, &[f32], &[T], bool) -> T),
+}
+
+impl<T> InterpolationFunction<T>
+where
+    T: InterpolationPrimitive + Copy,
+{
+    pub fn interpolate(&self, input: f32, inputs: &[f32], outputs: &[T], normalize: bool) -> T {
+        match *self {
+            InterpolationFunction::Linear => linear_interpolate(input, inputs, outputs, normalize),
+            InterpolationFunction::SphericalLinear => {
+                spherical_linear_interpolate(input, inputs, outputs, normalize)
+            }
+            InterpolationFunction::Step => step_interpolate(input, inputs, outputs, normalize),
+            InterpolationFunction::CubicSpline => {
+                cubic_spline_interpolate(input, inputs, outputs, normalize)
+            }
+            InterpolationFunction::CatmullRomSpline => {
+                catmull_rom_spline_interpolate(input, inputs, outputs, normalize)
+            }
+            InterpolationFunction::Function(ref f) => f(input, inputs, outputs, normalize),
+        }
+    }
+}
+
+impl<T> fmt::Debug for InterpolationFunction<T>
+where
+    T: InterpolationPrimitive,
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            InterpolationFunction::Linear => write!(f, "Linear"),
+            InterpolationFunction::SphericalLinear => write!(f, "SphericalLinear"),
+            InterpolationFunction::Step => write!(f, "Step"),
+            InterpolationFunction::CatmullRomSpline => write!(f, "CatmullRomSpline"),
+            InterpolationFunction::CubicSpline => write!(f, "CubicSpline"),
+            InterpolationFunction::Function(_) => write!(f, "Function"),
+        }
+    }
+}
+
+impl<T> PartialEq for InterpolationFunction<T>
+where
+    T: InterpolationPrimitive,
+{
+    fn eq(&self, other: &InterpolationFunction<T>) -> bool {
+        use self::InterpolationFunction::*;
+        match (self, other) {
+            (&Linear, &Linear) => true,
+            (&SphericalLinear, &SphericalLinear) => true,
+            (&Step, &Step) => true,
+            (&CatmullRomSpline, &CatmullRomSpline) => true,
+            (&CubicSpline, &CubicSpline) => true,
+            _ => false, // Functions should never be equal
+        }
+    }
 }

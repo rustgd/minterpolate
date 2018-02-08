@@ -15,3 +15,4 @@ keywords = ["gamedev", "mint", "interpolation"]
 [dependencies]
 mint = "0.4"
 num = "0"
+serde = { version = "1.0", features = ["derive"], optional = true }
