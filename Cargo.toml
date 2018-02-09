@@ -1,6 +1,6 @@
 [package]
 name = "minterpolate"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Simon Rönnberg <seamonr@gmail.com>"]
 repository = "https://github.com/rustgd/minterpolate.git"
 homepage = "https://github.com/rustgd/minterpolate"
