@@ -32,6 +32,7 @@ pub use catmull_rom_spline::catmull_rom_spline_interpolate;
 pub use cubic_spline::cubic_spline_interpolate;
 pub use linear::linear_interpolate;
 pub use primitive::InterpolationPrimitive;
+pub use quasi_spherical_linear::quasi_spherical_linear_interpolate;
 pub use spherical_linear::spherical_linear_interpolate;
 pub use step::step_interpolate;
 
@@ -41,6 +42,7 @@ mod spherical_linear;
 mod step;
 mod cubic_spline;
 mod catmull_rom_spline;
+mod quasi_spherical_linear;
 
 use std::fmt;
 
@@ -104,6 +106,8 @@ where
     Linear,
     /// Spherical linear interpolation
     SphericalLinear,
+    /// Quasi spherical linear interpolation
+    QuasiSphericalLinear,
     /// Step interpolation
     Step,
     /// Catmull-Rom spline interpolation
@@ -125,6 +129,9 @@ where
             InterpolationFunction::SphericalLinear => {
                 spherical_linear_interpolate(input, inputs, outputs, normalize)
             }
+            InterpolationFunction::QuasiSphericalLinear => {
+                quasi_spherical_linear_interpolate(input, inputs, outputs, normalize)
+            }
             InterpolationFunction::Step => step_interpolate(input, inputs, outputs, normalize),
             InterpolationFunction::CubicSpline => {
                 cubic_spline_interpolate(input, inputs, outputs, normalize)
@@ -145,6 +152,7 @@ where
         match *self {
             InterpolationFunction::Linear => write!(f, "Linear"),
             InterpolationFunction::SphericalLinear => write!(f, "SphericalLinear"),
+            InterpolationFunction::QuasiSphericalLinear => write!(f, "QuasiSphericalLinear"),
             InterpolationFunction::Step => write!(f, "Step"),
             InterpolationFunction::CatmullRomSpline => write!(f, "CatmullRomSpline"),
             InterpolationFunction::CubicSpline => write!(f, "CubicSpline"),
@@ -162,6 +170,7 @@ where
         match (self, other) {
             (&Linear, &Linear) => true,
             (&SphericalLinear, &SphericalLinear) => true,
+            (&QuasiSphericalLinear, &QuasiSphericalLinear) => true,
             (&Step, &Step) => true,
             (&CatmullRomSpline, &CatmullRomSpline) => true,
             (&CubicSpline, &CubicSpline) => true,
