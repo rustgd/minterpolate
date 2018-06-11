@@ -37,9 +37,13 @@ where
     } else {
         let d = (input - inputs[input_index]) / (inputs[input_index + 1] - inputs[input_index]);
         let left = outputs[input_index];
-        let right = outputs[input_index + 1];
+        let mut right = outputs[input_index + 1];
 
-        let dot = left.dot(&right);
+        let mut dot = left.dot(&right);
+        if dot < 0. {
+            dot = -dot;
+            right = right.mul(-1.);
+        }
         let dot_threshold = cast(0.9995f32).unwrap();
         let v = if dot > dot_threshold {
             left.add(&right.sub(&left).mul(d))
