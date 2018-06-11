@@ -1,6 +1,6 @@
 [package]
 name = "minterpolate"
-version = "0.2.3"
+version = "0.3.0"
 authors = ["Simon Rönnberg <seamonr@gmail.com>"]
 repository = "https://github.com/rustgd/minterpolate.git"
 homepage = "https://github.com/rustgd/minterpolate"
@@ -13,6 +13,6 @@ description = "Data set interpolation for mint primitives and raw arrays"
 keywords = ["gamedev", "mint", "interpolation"]
 
 [dependencies]
-mint = "0.4"
+mint = "0.5"
 num = "0"
 serde = { version = "1.0", features = ["derive"], optional = true }
