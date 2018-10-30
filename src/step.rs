@@ -15,16 +15,16 @@ use primitive::InterpolationPrimitive;
 /// - `normalize`: if true, normalize the interpolated value before returning it
 pub fn step_interpolate<T>(input: f32, inputs: &[f32], outputs: &[T], _: bool) -> T
 where
-    T: InterpolationPrimitive + Copy,
+    T: InterpolationPrimitive + Clone,
 {
     let input_index = match get_input_index(input, inputs) {
         Some(index) => index,
-        None => return outputs[0],
+        None => return outputs[0].clone(),
     };
     if input_index >= (inputs.len() - 1) {
-        outputs[outputs.len() - 1]
+        outputs[outputs.len() - 1].clone()
     } else {
-        outputs[input_index]
+        outputs[input_index].clone()
     }
 }
 
