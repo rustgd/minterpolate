@@ -30,14 +30,14 @@ pub fn catmull_rom_spline_interpolate<T>(
     normalize: bool,
 ) -> T
 where
-    T: InterpolationPrimitive + Copy,
+    T: InterpolationPrimitive + Clone,
 {
     let input_index = match get_input_index(input, inputs) {
         Some(index) => index,
-        None => return outputs[1],
+        None => return outputs[1].clone(),
     };
     if input_index >= (inputs.len() - 1) {
-        outputs[outputs.len() - 2]
+        outputs[outputs.len() - 2].clone()
     } else {
         let t_diff = inputs[input_index + 1] - inputs[input_index];
         let v = spline(
@@ -59,13 +59,13 @@ where
 
 fn catmull_tangent<D>(index: usize, inputs: &[f32], outputs: &[D]) -> D
 where
-    D: InterpolationPrimitive + Copy,
+    D: InterpolationPrimitive + Clone,
 {
     let output_index = index + 1;
     if index == 0 {
-        outputs[0]
+        outputs[0].clone()
     } else if index == inputs.len() - 1 {
-        outputs[outputs.len() - 1]
+        outputs[outputs.len() - 1].clone()
     } else {
         outputs[output_index + 1]
             .sub(&outputs[output_index - 1])

@@ -19,18 +19,18 @@ use primitive::InterpolationPrimitive;
 /// - `normalize`: if true, normalize the interpolated value before returning it
 pub fn linear_interpolate<T>(input: f32, inputs: &[f32], outputs: &[T], normalize: bool) -> T
 where
-    T: InterpolationPrimitive + Copy,
+    T: InterpolationPrimitive + Clone,
 {
     let input_index = match get_input_index(input, inputs) {
         Some(index) => index,
-        None => return outputs[0],
+        None => return outputs[0].clone(),
     };
     if input_index >= (inputs.len() - 1) {
-        outputs[outputs.len() - 1]
+        outputs[outputs.len() - 1].clone()
     } else {
         let d = (input - inputs[input_index]) / (inputs[input_index + 1] - inputs[input_index]);
-        let left = outputs[input_index];
-        let right = outputs[input_index + 1];
+        let left = &outputs[input_index];
+        let right = &outputs[input_index + 1];
         let v = left.add(&right.sub(&left).mul(d));
         if normalize {
             v.normalize()

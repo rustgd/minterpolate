@@ -121,7 +121,7 @@ where
 
 impl<T> InterpolationFunction<T>
 where
-    T: InterpolationPrimitive + Copy,
+    T: InterpolationPrimitive + Clone,
 {
     pub fn interpolate(&self, input: f32, inputs: &[f32], outputs: &[T], normalize: bool) -> T {
         match *self {
